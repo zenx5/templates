@@ -26,11 +26,10 @@ jobs:
     - name: Update README.md with folder list
       run: |
         FOLDERS=$(echo "$FOLDERS" | tr ' ' '\n')
-        echo -e "## Root Folders\n" > FOLDERS.md
+        echo -e "# Templates List\n" > FOLDERS.md
         for folder in $FOLDERS; do
           echo "- [$folder](./$folder)" >> FOLDERS.md
         done
-        cat README.md >> FOLDERS.md
         mv FOLDERS.md README.md
 
     - name: Commit changes
