@@ -28,7 +28,15 @@ jobs:
         FOLDERS=$(echo "$FOLDERS" | tr ' ' '\n')
         echo -e "# Templates List\n" > FOLDERS.md
         for folder in $FOLDERS; do
-          echo "- [$folder](./$folder)" >> FOLDERS.md
+          if [ -z "$(ls -A $folder | grep -v '/')" ]; then
+            echo "- [$folder](./$folder)" >> FOLDERS.md
+            SUBFOLDERS=$(ls -d $folder*/ | cut -f2 -d'/')
+            for subfolder in $SUBFOLDERS; do
+              echo "  - [$subfolder](./$folder/$subfolder)" >> FOLDERS.md
+            done
+          else
+            echo "- [$folder](./$folder)" >> FOLDERS.md
+          fi
         done
         mv FOLDERS.md README.md
 
