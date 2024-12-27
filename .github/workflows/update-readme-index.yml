@@ -1,0 +1,42 @@
+name: Update README with Folders
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository content
+      uses: actions/checkout@v2
+
+    - name: Count folders in root directory
+      id: count-folders
+      run: |
+        FOLDERS=$(ls -d */ | cut -f1 -d'/')
+        echo "FOLDERS=$FOLDERS" >> $GITHUB_ENV
+
+    - name: Update README.md with folder list
+      run: |
+        FOLDERS=$(echo "$FOLDERS" | tr ' ' '\n')
+        echo -e "## Root Folders\n" > FOLDERS.md
+        for folder in $FOLDERS; do
+          echo "- [$folder](./$folder)" >> FOLDERS.md
+        done
+        cat README.md >> FOLDERS.md
+        mv FOLDERS.md README.md
+
+    - name: Commit changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add README.md
+        git commit -m 'Update README with folder links'
+        git push
