@@ -1,4 +1,3 @@
-## Root Folders
+# Templates List
 
 - [react](./react)
-# Templates
