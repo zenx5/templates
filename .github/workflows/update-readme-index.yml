@@ -19,7 +19,7 @@ jobs:
 
     - name: Update README.md with folder list
       run: |
-        FOLDERS=$(echo "$FOLDERS" | tr ' ' '\n')
+        FOLDERS=$(ls -d */ | cut -f1 -d'/')
         echo -e "# Templates List\n" > FOLDERS.md
         for folder in $FOLDERS; do
           # if [ -z "$(ls -Ap $folder | grep -v '/')" ]; then
